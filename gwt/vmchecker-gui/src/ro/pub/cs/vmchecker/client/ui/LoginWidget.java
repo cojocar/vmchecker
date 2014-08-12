@@ -111,6 +111,7 @@ public class LoginWidget extends Composite
 				localeBox.setSelectedIndex(localeBox.getItemCount() - 1);
 		}
 		
+		localeBox.setVisible(false);
 		localeBox.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				String localeName = localeBox.getValue(localeBox.getSelectedIndex());
