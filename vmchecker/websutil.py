@@ -193,7 +193,7 @@ def submission_upload_info(courseId, user, assignment):
     upload_time_struct = sss.get_upload_time_struct(assignment, user)
 
     # XXX hack, we should move this
-    language = 'ro'
+    language = 'en'
     deadline_explanation = penalty.verbose_time_difference(upload_time_struct, deadline_struct, language)
 
     ret = ""
