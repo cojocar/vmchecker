@@ -31,7 +31,7 @@ public class AssignmentPresenter implements Presenter {
 
 	private MenuPresenter menuPresenter = null;
 	private AssignmentBoardPresenter boardPresenter = null;
-	private StatisticsPresenter statsPresenter = null;
+	//private StatisticsPresenter statsPresenter = null;
 	private static VmcheckerConstants constants = GWT
 			.create(VmcheckerConstants.class);
 
@@ -69,7 +69,7 @@ public class AssignmentPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				menuPresenter.getWidget().setSelectedIndex(-1);
-				statsPresenter.go(widget.getBoardPanel());
+				//statsPresenter.go(widget.getBoardPanel());
 			}
 		});
 	}
@@ -99,14 +99,14 @@ public class AssignmentPresenter implements Presenter {
 
 				menuPresenter = new MenuPresenter(eventBus, new NumberedMenu(titles));
 				boardPresenter = new AssignmentBoardPresenter(eventBus, service, courseId, new AssignmentBoardWidget());
-				statsPresenter = new StatisticsPresenter(eventBus, service, courseId, username, result, new StatisticsWidget());
+				//statsPresenter = new StatisticsPresenter(eventBus, service, courseId, username, result, new StatisticsWidget());
 
 				bindWidget(widget);
 				widget.getMenuPanel().clear();
 				menuPresenter.go(widget.getMenuPanel());
 				menuPresenter.getWidget().setSelectedIndex(-1);
 				/* init */
-				statsPresenter.go(widget.getBoardPanel());
+				//statsPresenter.go(widget.getBoardPanel());
 				//fireAssignmentSelected(0);
 				/* boardPresenter.assignmentSelected(assignments[0]); */
 				container.add((Widget)widget);

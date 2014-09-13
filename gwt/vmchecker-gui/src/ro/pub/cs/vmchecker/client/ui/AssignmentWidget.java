@@ -37,6 +37,7 @@ public class AssignmentWidget extends Composite
 	public AssignmentWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 		viewStatsButton.setText(constants.viewStatsButton());
+		viewStatsButton.setEnabled(false);
 	}
 
 	@Override
