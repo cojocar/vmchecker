@@ -120,7 +120,8 @@ def uploadAssignment(req, courseId, assignmentId, archiveFile):
     # Reset the timeout
     s.save()
 
-    if archiveFile.filename == None:
+    if not hasattr(archiveFile, "filename") or \
+            archiveFile.filename == None:
         return  json.dumps({'errorType':websutil.ERR_OTHER,
                     'errorMessage':"File not uploaded.",
                     'errorTrace':""})
