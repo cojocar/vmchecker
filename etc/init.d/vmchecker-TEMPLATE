@@ -1,0 +1,66 @@
+#!/bin/sh
+
+set +e
+
+bn=$(basename ${0})
+CID=${bn##*-}
+if $(test "x${CID}" = "xTEMPLATE"); then
+	echo "Do not run the template. Make a symlink: vmchecker-\${COURSE_ID}"
+	exit 1
+fi
+# Must be a valid filename
+NAME=vmchecker-queue-manager-${CID}
+PIDFILE=/var/run/$NAME.pid
+#This is the command to be run, give the full pathname
+DAEMON=/usr/local/bin/vmchecker-queue-manager
+DAEMON_OPTS="--course_id ${CID} --stdin=/dev/null --stdout=/var/log/vmchecker/${CID}-queue-manager.log --stderr=/var/log/vmchecker/${CID}-queue-manager.log"
+DAEMON_USER="vmqueue"
+CWDIR=/home/vmqueue
+
+export PATH="${PATH}:/usr/sbin:/sbin:/usr/local/bin"
+
+#set -x
+. /lib/lsb/init-functions
+do_start() {
+	log_daemon_msg "Starting daemon" "$NAME"
+	echo
+	#--startas ${DAEMON} \
+	#--user $DAEMON_USER \
+	#--name queue${CID} \
+
+	start-stop-daemon --start --oknodo \
+		--chuid $DAEMON_USER \
+		--chdir $CWDIR \
+		--make-pidfile \
+		--background \
+		--startas /usr/bin/python \
+		--pidfile ${PIDFILE} \
+		-- ${DAEMON} $DAEMON_OPTS
+	echo "done"
+}
+
+do_stop() {
+	log_daemon_msg "Stopping daemon: "$NAME
+	echo
+	start-stop-daemon --stop \
+		--pidfile $PIDFILE
+	echo "done"
+}
+
+case "$1" in
+    start)
+	do_start
+	;;
+    stop)
+	do_stop
+	;;
+    restart)
+	do_start
+	do_stop
+	;;
+    *)
+	echo "Usage: "$1" {start|stop|restart}"
+	exit 1
+esac
+
+exit 0
