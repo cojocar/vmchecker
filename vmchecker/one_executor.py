@@ -97,7 +97,19 @@ class OneVM(VM):
         if cnt == REVERT_TIMEOUT:
             _logger.warning("probably failing")
 
-        self._rpc('one.vm.snapshotrevert', self.vm_id, number)
+        MAX_RPC_TRY = 10
+        failed_cnt = 0
+        while True:
+            try:
+                self._rpc('one.vm.snapshotrevert', self.vm_id, number)
+                break
+            except OneVMException:
+                failed_cnt += 1
+            if failed_cnt == MAX_RPC_TRY:
+                _logger.error("failed reverting, after %d times" % (failed_cnt))
+                raise OneVMException("Failed multiple times")
+        if failed_cnt != 0:
+            _logger.error("succeeded reverting, after %d times" % (failed_cnt))
 
     def copyTo(self, sourceDir, targetDir, files):
         _logger.info("copy to vm %d, %s->%s (%s)" % \
