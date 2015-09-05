@@ -55,8 +55,8 @@ case "$1" in
 	do_stop
 	;;
     restart)
-	do_start
 	do_stop
+	do_start
 	;;
     *)
 	echo "Usage: "$1" {start|stop|restart}"
