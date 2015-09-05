@@ -121,7 +121,10 @@ class OneVM(VM):
                 src_f = os.path.join(sourceDir, f)
                 # assume remote path delim == host path delim
                 dst_f = os.path.join(targetDir, f)
-                sftp.put(src_f, dst_f, confirm=True)
+                try:
+                    sftp.put(src_f, dst_f, confirm=True)
+                except OSError:
+                    _logger.warning("failed to copy file: %s to %s" % (src_f, dst_f))
         finally:
             t.close()
 
