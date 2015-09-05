@@ -230,6 +230,14 @@ def create_testing_bundle(user, assignment, course_id):
 
     asscfg  = vmcfg.assignments()
     machine = asscfg.get(assignment, 'Machine')
+    logger.info('Create bundle for user: %s' % user)
+
+    if vmcfg.assignments().send_username(assignment):
+        username_path = os.path.join(sbroot, 'username')
+        with open(username_path, 'wt') as f:
+            f.write(user)
+    else:
+        username_path = None
 
     rel_file_list = [ ('run.sh',   vmcfg.get(machine, 'RunScript',   '')),
                       ('build.sh', vmcfg.get(machine, 'BuildScript', '')),
@@ -250,9 +258,14 @@ def create_testing_bundle(user, assignment, course_id):
         arch_path = paths.submission_archive_file(sbroot)
         arch_path = vmpaths.abspath(arch_path)
         should_not_contain = map(lambda f: f[0], rel_file_list)
+        if username_path is not None:
+            should_not_contain.append('_username')
         check_archive_for_file_override(arch_path, should_not_contain)
 
     file_list = [ (dst, vmpaths.abspath(src)) for (dst, src) in rel_file_list if src != '' ]
+
+    if username_path is not None:
+        file_list.append(('_username', username_path))
 
     # builds archive with configuration
     with vmcfg.assignments().lock(vmpaths, assignment):
@@ -266,6 +279,12 @@ def create_testing_bundle(user, assignment, course_id):
         try:
             with closing(os.fdopen(bundle_fd, 'w+b')) as handler:
                 ziputil.create_zip(handler, file_list)
+            if username_path is not None:
+                try:
+                    os.remove(username_path)
+                except OSError as e:
+                    logger.error('Failed to remove username file: %s' % username_path)
+                    raise e
         except:
             logger.error('Failed to create zip archive %s', bundle_path)
             raise # just cleaned up the bundle. the error still needs

@@ -198,6 +198,15 @@ class AssignmentsConfig(confdefaults.ConfigWithDefaults):
         val = val.strip().lower()
         return (val == 'yes') or (val == 'y') or (val == 'true')
 
+    def send_username(self, assignment):
+        """Set to True if we want to create a username file containing the
+        username of the submission. The username cannot be fully trusted.
+        This is similar to submission-config. Default is 'no'.
+        """
+        val = self.getd(assignment, 'SendUsername', 'no')
+        val = val.strip().lower()
+        return (val == 'yes') or (val == 'y') or (val == 'true')
+
     def show_grades_before_deadline(self, assignment):
         """This returns True, when we want to show the grades, in the general
         view before the deadline. Default is 'no'.

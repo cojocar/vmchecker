@@ -38,7 +38,7 @@ def unzip_safely(archive_filename, destination):
         z.close()
 
 def check_archive_for_file_override(archive_filename, \
-        should_not_contain=['tests.zip', 'archive.zip', 'run.sh', 'build.sh', 'course-config', 'submission-config']):
+        should_not_contain=['tests.zip', 'archive.zip', 'run.sh', 'build.sh', 'course-config', 'submission-config', '_username']):
     """Sanyity check for archive contents file names.
     We do not want to override certain file names.
     """

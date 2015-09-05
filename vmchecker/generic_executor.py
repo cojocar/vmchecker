@@ -163,7 +163,7 @@ class VM():
         try:
             if buildcfg==None:
                 buildcfg = {
-                    'input'  : ['archive.zip', 'tests.zip'],
+                    'input'  : ['archive.zip', 'tests.zip', '_username'],
                     'script' : ['build.sh'],
                     'output' : ['build-stdout.vmr', 'build-stderr.vmr'],
                     'timeout': int(timeout),

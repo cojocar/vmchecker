@@ -189,6 +189,15 @@ Timeout = 120
 #      versioning system -- i.e. there is no testing involved, what is submited
 #      is saved in the storer.
 #
+# SendUsername = [yes|true|y|no]
+#
+#      Optional parameter.
+#
+#      Default is 'no'. If true, then a file named '_username' is created in the
+#      test environment (on the vm). This file contains the username under
+#      which the submission was done. The username is useful for testing assignemnts
+#      that are customized per user.
+#
 # ShowGradesBeforeDeadline = [yes|true|y|no]
 #
 #      Optional parameter.
