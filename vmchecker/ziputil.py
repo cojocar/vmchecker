@@ -48,7 +48,7 @@ def check_archive_for_file_override(archive_filename, \
             name = os.path.normpath(raw_name)
             # UTF8 safe?
             if name in should_not_contain:
-                raise zipfile.BadZipfile
+                raise zipfile.BadZipfile("Contains blacklisted file: '%s'" % (name))
     finally:
         z.close()
 
